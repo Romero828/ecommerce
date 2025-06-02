@@ -1,4 +1,4 @@
-# ecommerce
+# ecommerce site.
 
 A responsive, single-page e-commerce frontend for premium smartphones. Built with HTML, TailwindCSS, and vanilla JavaScript. Lightweight, fast, and easy to extend.
 
