@@ -3,7 +3,7 @@
 A responsive, single-page e-commerce frontend for premium smartphones. Built with HTML, TailwindCSS, and vanilla JavaScript. Lightweight, fast, and easy to extend.
 
 Features
-Fully responsive layout (mobile, tablet, desktop)
+Fully responsive layout 
 
 Product catalog with category filters, sorting, and search
 
@@ -29,12 +29,6 @@ Image assets from Unsplash
 Getting Started
 Clone and open in browser:
 
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/mobiletech.git
-cd mobiletech
-open index.html
 Or run with Live Server for local development.
 
 Components
