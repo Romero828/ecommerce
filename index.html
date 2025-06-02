@@ -1,0 +1,1224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobileTech - Premium Smartphone Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(to right, #4F46E5, #7C3AED);
+        }
+        
+        .carousel-container {
+            scroll-behavior: smooth;
+        }
+        
+        .cart-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .scale-in-center {
+            animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+        
+        @keyframes scale-in-center {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <i class="fas fa-mobile-alt text-indigo-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">MobileTech</span>
+                    </a>
+                    <div class="hidden md:flex ml-8 space-x-6">
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+                        <div class="dropdown">
+                            <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Categories</a>
+                            <div class="dropdown-content mt-2">
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Flagship</a>
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Mid-range</a>
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Budget</a>
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Foldable</a>
+                            </div>
+                        </div>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">New Releases</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Deals</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Support</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="Search products..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-64">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600">
+                        <i class="far fa-user text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600">
+                        <i class="far fa-heart text-xl"></i>
+                    </a>
+                    <div class="relative" id="cart-icon">
+                        <i class="fas fa-shopping-cart text-xl text-gray-700 hover:text-indigo-600"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" id="cart-count">0</span>
+                    </div>
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden py-4 mt-4 border-t border-gray-200">
+                <div class="flex flex-col space-y-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search products..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-full text-sm w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Categories</a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">New Releases</a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Deals</a>
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Support</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-24 pb-16 mt-12 sm:mt-0">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col-reverse md:flex-row items-center">
+                <div class="md:w-1/2 text-center md:text-left text-white mt-8 md:mt-0">
+                    <h1 class="text-4xl sm:text-5xl font-bold leading-tight mb-4">Discover the Latest in Mobile Technology</h1>
+                    <p class="text-lg opacity-90 mb-8 max-w-md mx-auto md:mx-0">Explore our range of premium smartphones with cutting-edge features at unbeatable prices.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
+                        <button class="bg-white text-indigo-600 hover:bg-gray-100 px-6 py-3 rounded-full font-medium shadow-lg transform transition hover:scale-105">
+                            Shop Now
+                        </button>
+                        <button class="border-2 border-white text-white hover:bg-white hover:text-indigo-600 px-6 py-3 rounded-full font-medium transition">
+                            View Deals
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=654&q=80" alt="Smartphone" class="max-w-xs sm:max-w-md mx-auto md:max-w-full transform rotate-12 hover:rotate-0 transition duration-500 rounded-3xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Categories -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Shop By Category</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="rounded-xl overflow-hidden bg-gray-100 group relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1616410011236-7a42121dd981?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Flagship Phones" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                        <div class="p-4">
+                            <h3 class="text-white font-semibold">Flagship</h3>
+                            <p class="text-gray-200 text-sm">Premium devices</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-xl overflow-hidden bg-gray-100 group relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1600541519467-937869997e34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mid-range Phones" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                        <div class="p-4">
+                            <h3 class="text-white font-semibold">Mid-range</h3>
+                            <p class="text-gray-200 text-sm">Great value</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-xl overflow-hidden bg-gray-100 group relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="Budget Phones" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                        <div class="p-4">
+                            <h3 class="text-white font-semibold">Budget</h3>
+                            <p class="text-gray-200 text-sm">Affordable options</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-xl overflow-hidden bg-gray-100 group relative cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1659887374384-6a8a3eddbc0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1026&q=80" alt="Foldable Phones" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                        <div class="p-4">
+                            <h3 class="text-white font-semibold">Foldable</h3>
+                            <p class="text-gray-200 text-sm">Next-gen design</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Latest Offers Banner -->
+    <section class="py-10 bg-gradient-to-r from-indigo-100 to-purple-100">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                        <span class="text-indigo-600 font-semibold mb-2">Limited Time Offer</span>
+                        <h2 class="text-3xl font-bold mb-4">Save up to 30% on Selected Premium Phones</h2>
+                        <p class="text-gray-600 mb-6">Get amazing deals on flagship devices with free premium accessories. Offer valid until stocks last.</p>
+                        <div>
+                            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-medium transition">
+                                View Offers
+                            </button>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 bg-indigo-50 p-8 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=929&q=80" alt="Special Offer" class="max-w-xs md:max-w-sm rounded-xl shadow-xl transform -rotate-6 hover:rotate-0 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Products Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Featured Products</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <select id="sort-select" class="appearance-none bg-white border border-gray-300 px-4 py-2 pr-8 rounded-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="featured">Featured</option>
+                            <option value="newest">Newest</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Top Rated</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="bg-white p-2 rounded-md border border-gray-300 hover:bg-gray-50 transition" id="grid-view">
+                            <i class="fas fa-th text-gray-600"></i>
+                        </button>
+                        <button class="bg-white p-2 rounded-md border border-gray-300 hover:bg-gray-50 transition" id="list-view">
+                            <i class="fas fa-list text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="product-grid">
+                <!-- Product cards will be dynamically generated here -->
+            </div>
+            
+            <div class="flex justify-center mt-12">
+                <button class="bg-white hover:bg-gray-50 text-indigo-600 font-medium border border-indigo-600 px-6 py-3 rounded-full transition">
+                    Load More Products
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Why Shop With Us</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6 hover:shadow-lg rounded-xl transition duration-300">
+                    <div class="text-indigo-600 text-4xl mb-4">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
+                    <p class="text-gray-600">Free shipping on orders over $50 with delivery within 24 hours in select areas.</p>
+                </div>
+                
+                <div class="text-center p-6 hover:shadow-lg rounded-xl transition duration-300">
+                    <div class="text-indigo-600 text-4xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Secure Payments</h3>
+                    <p class="text-gray-600">All transactions are secure with multiple payment options available.</p>
+                </div>
+                
+                <div class="text-center p-6 hover:shadow-lg rounded-xl transition duration-300">
+                    <div class="text-indigo-600 text-4xl mb-4">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Easy Returns</h3>
+                    <p class="text-gray-600">30-day hassle-free return policy with full refund guaranteed.</p>
+                </div>
+                
+                <div class="text-center p-6 hover:shadow-lg rounded-xl transition duration-300">
+                    <div class="text-indigo-600 text-4xl mb-4">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
+                    <p class="text-gray-600">Our customer support team is available round the clock to assist you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-indigo-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left">
+                    <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+                    <p class="text-indigo-200 max-w-md mx-auto lg:mx-0">Subscribe to our newsletter and be the first to know about new products, special offers, and exclusive deals.</p>
+                </div>
+                <div class="lg:w-1/2">
+                    <form class="flex flex-col sm:flex-row gap-4">
+                        <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button type="submit" class="bg-white text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-full font-medium shadow-lg transform transition hover:scale-105">
+                            Subscribe
+                        </button>
+                    </form>
+                    <p class="text-indigo-300 text-sm mt-4 text-center sm:text-left">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <a href="#" class="flex items-center mb-4">
+                        <i class="fas fa-mobile-alt text-indigo-500 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">MobileTech</span>
+                    </a>
+                    <p class="text-gray-400 mb-4">Your one-stop destination for premium smartphones and accessories at unbeatable prices.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Products</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">My Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Order Tracking</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Wishlist</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Returns & Exchanges</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-indigo-500"></i>
+                            <span class="text-gray-400">1234 Tech Street, San Francisco, CA 94107</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2 text-indigo-500"></i>
+                            <span class="text-gray-400">+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-indigo-500"></i>
+                            <span class="text-gray-400">support@mobiletech.com</span>
+                        </li>
+                    </ul>
+                    <div class="mt-4">
+                        <h4 class="font-medium mb-2">Accepted Payment Methods</h4>
+                        <div class="flex space-x-3">
+                            <i class="fab fa-cc-visa text-2xl text-gray-400"></i>
+                            <i class="fab fa-cc-mastercard text-2xl text-gray-400"></i>
+                            <i class="fab fa-cc-amex text-2xl text-gray-400"></i>
+                            <i class="fab fa-cc-paypal text-2xl text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 MobileTech. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Shipping Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Quick View Modal -->
+    <div id="quick-view-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto scale-in-center">
+            <div class="p-6" id="modal-content">
+                <!-- Modal content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-xl transform translate-x-full transition duration-300 ease-in-out z-50">
+        <div class="h-full flex flex-col">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">Your Cart (<span id="cart-sidebar-count">0</span>)</h2>
+                <button id="close-cart" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex-grow overflow-y-auto p-4" id="cart-items">
+                <!-- Cart items will be dynamically inserted here -->
+                <div class="flex justify-center items-center h-full text-gray-500" id="empty-cart-message">
+                    <div class="text-center">
+                        <i class="fas fa-shopping-cart text-5xl mb-4"></i>
+                        <p>Your cart is empty</p>
+                        <button class="mt-4 text-indigo-600 hover:text-indigo-800 font-medium" id="start-shopping">Start Shopping</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex justify-between mb-4">
+                    <span class="font-medium">Subtotal:</span>
+                    <span class="font-bold" id="cart-subtotal">$0.00</span>
+                </div>
+                <button class="bg-indigo-600 hover:bg-indigo-700 text-white w-full py-3 rounded-full font-medium mb-2" id="checkout-button">
+                    Checkout
+                </button>
+                <button class="text-indigo-600 hover:text-indigo-800 text-center w-full" id="continue-shopping">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: "Galaxy S23 Ultra",
+                brand: "Samsung",
+                price: 1199.99,
+                originalPrice: 1299.99,
+                rating: 4.8,
+                reviewCount: 356,
+                image: "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+                category: "Flagship",
+                isNew: true,
+                isPopular: true,
+                specs: {
+                    display: "6.8\" Dynamic AMOLED 2X, 120Hz",
+                    camera: "200MP main, 12MP ultrawide, 10MP 3x telephoto, 10MP 10x telephoto",
+                    processor: "Snapdragon 8 Gen 2",
+                    battery: "5000mAh",
+                    storage: ["128GB", "256GB", "512GB", "1TB"],
+                    ram: "12GB",
+                    os: "Android 13"
+                },
+                colors: ["Phantom Black", "Cream", "Green", "Lavender"],
+                description: "The Samsung Galaxy S23 Ultra features a stunning 6.8-inch Dynamic AMOLED display, a powerful Snapdragon 8 Gen 2 processor, and a versatile quad-camera system with a 200MP main sensor. With its premium design, built-in S Pen, and all-day battery life, it's the ultimate smartphone for power users."
+            },
+            {
+                id: 2,
+                name: "iPhone 14 Pro Max",
+                brand: "Apple",
+                price: 1099.99,
+                originalPrice: 1199.99,
+                rating: 4.9,
+                reviewCount: 429,
+                image: "https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80",
+                category: "Flagship",
+                isNew: true,
+                isPopular: true,
+                specs: {
+                    display: "6.7\" Super Retina XDR, ProMotion",
+                    camera: "48MP main, 12MP ultrawide, 12MP telephoto",
+                    processor: "A16 Bionic",
+                    battery: "4323mAh",
+                    storage: ["128GB", "256GB", "512GB", "1TB"],
+                    ram: "6GB",
+                    os: "iOS 16"
+                },
+                colors: ["Deep Purple", "Gold", "Silver", "Space Black"],
+                description: "The iPhone 14 Pro Max features Apple's innovative Dynamic Island, Always-On display, and a 48MP camera with a quad-pixel sensor. Powered by the A16 Bionic chip, it delivers incredible performance for demanding tasks and games while maintaining excellent battery life."
+            },
+            {
+                id: 3,
+                name: "Pixel 7 Pro",
+                brand: "Google",
+                price: 899.99,
+                originalPrice: 999.99,
+                rating: 4.7,
+                reviewCount: 287,
+                image: "https://images.unsplash.com/photo-1666201746663-2c31da9bcaf6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                category: "Flagship",
+                isNew: true,
+                isPopular: false,
+                specs: {
+                    display: "6.7\" LTPO OLED, 120Hz",
+                    camera: "50MP main, 12MP ultrawide, 48MP telephoto",
+                    processor: "Google Tensor G2",
+                    battery: "5000mAh",
+                    storage: ["128GB", "256GB", "512GB"],
+                    ram: "12GB",
+                    os: "Android 13"
+                },
+                colors: ["Obsidian", "Snow", "Hazel"],
+                description: "The Google Pixel 7 Pro brings Google's most advanced camera system yet, featuring a 50MP main sensor with enhanced low-light capabilities. The custom Google Tensor G2 chip powers unique AI features like Magic Eraser, Photo Unblur, and improved voice recognition, all wrapped in a refined design with a polished aluminum frame."
+            },
+            {
+                id: 4,
+                name: "Nothing Phone (1)",
+                brand: "Nothing",
+                price: 449.99,
+                originalPrice: 499.99,
+                rating: 4.5,
+                reviewCount: 178,
+                image: "https://images.unsplash.com/photo-1658428888373-28b82dc761fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
+                category: "Mid-range",
+                isNew: true,
+                isPopular: true,
+                specs: {
+                    display: "6.55\" OLED, 120Hz",
+                    camera: "50MP main, 50MP ultrawide",
+                    processor: "Snapdragon 778G+",
+                    battery: "4500mAh",
+                    storage: ["128GB", "256GB"],
+                    ram: "8GB",
+                    os: "Android 12"
+                },
+                colors: ["Black", "White"],
+                description: "The Nothing Phone (1) stands out with its unique transparent back design and Glyph Interface—a system of LED strips that create distinctive light patterns for notifications and alerts. It offers a clean, bloatware-free software experience, solid performance, and good battery life at a competitive price point."
+            },
+            {
+                id: 5,
+                name: "Xiaomi 13 Pro",
+                brand: "Xiaomi",
+                price: 899.99,
+                originalPrice: 959.99,
+                rating: 4.6,
+                reviewCount: 143,
+                image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=654&q=80",
+                category: "Flagship",
+                isNew: true,
+                isPopular: false,
+                specs: {
+                    display: "6.73\" AMOLED, 120Hz",
+                    camera: "50MP main (Leica), 50MP ultrawide, 50MP telephoto",
+                    processor: "Snapdragon 8 Gen 2",
+                    battery: "4820mAh",
+                    storage: ["256GB", "512GB"],
+                    ram: "12GB",
+                    os: "Android 13"
+                },
+                colors: ["Ceramic White", "Ceramic Black", "Ceramic Flora Green"],
+                description: "The Xiaomi 13 Pro features a premium ceramic design and a sophisticated Leica camera system co-engineered with the legendary photography brand. Its 50MP main camera with a 1-inch sensor captures stunning photos in any lighting conditions, while the powerful Snapdragon 8 Gen 2 processor ensures smooth performance for all tasks."
+            },
+            {
+                id: 6,
+                name: "OnePlus 11",
+                brand: "OnePlus",
+                price: 699.99,
+                originalPrice: 799.99,
+                rating: 4.7,
+                reviewCount: 216,
+                image: "https://images.unsplash.com/photo-1676380612864-2f8c6fa3de6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1378&q=80",
+                category: "Flagship",
+                isNew: true,
+                isPopular: true,
+                specs: {
+                    display: "6.7\" AMOLED, 120Hz",
+                    camera: "50MP main, 48MP ultrawide, 32MP portrait",
+                    processor: "Snapdragon 8 Gen 2",
+                    battery: "5000mAh",
+                    storage: ["128GB", "256GB"],
+                    ram: ["8GB", "16GB"],
+                    os: "Android 13"
+                },
+                colors: ["Eternal Green", "Titan Black"],
+                description: "The OnePlus 11 delivers flagship performance with the Snapdragon 8 Gen 2 chip and up to 16GB of RAM. Its Hasselblad-tuned triple camera system captures true-to-life colors, while 100W SUPERVOOC charging fully powers the 5000mAh battery in just 25 minutes. OxygenOS provides a clean, fast, and customizable software experience."
+            },
+            {
+                id: 7,
+                name: "Galaxy A54",
+                brand: "Samsung",
+                price: 449.99,
+                originalPrice: 499.99,
+                rating: 4.4,
+                reviewCount: 186,
+                image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80",
+                category: "Mid-range",
+                isNew: true,
+                isPopular: true,
+                specs: {
+                    display: "6.4\" Super AMOLED, 120Hz",
+                    camera: "50MP main, 12MP ultrawide, 5MP macro",
+                    processor: "Exynos 1380",
+                    battery: "5000mAh",
+                    storage: ["128GB", "256GB"],
+                    ram: ["6GB", "8GB"],
+                    os: "Android 13"
+                },
+                colors: ["Awesome Graphite", "Awesome Violet", "Awesome Lime", "Awesome White"],
+                description: "The Samsung Galaxy A54 delivers premium features at a mid-range price point. Its vibrant Super AMOLED display with 120Hz refresh rate provides smooth scrolling and rich colors, while the 50MP main camera captures detailed photos in any situation. With IP67 water resistance and a long-lasting 5000mAh battery, it's built to keep up with your lifestyle."
+            },
+            {
+                id: 8,
+                name: "Z Flip 4",
+                brand: "Samsung",
+                price: 999.99,
+                originalPrice: 1099.99,
+                rating: 4.5,
+                reviewCount: 203,
+                image: "https://images.unsplash.com/photo-1662947995584-87fca0e3c6da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
+                category: "Foldable",
+                isNew: true,
+                isPopular: true,
+                specs: {
+                    display: "Main: 6.7\" Dynamic AMOLED 2X, 120Hz; Cover: 1.9\" Super AMOLED",
+                    camera: "12MP main, 12MP ultrawide",
+                    processor: "Snapdragon 8+ Gen 1",
+                    battery: "3700mAh",
+                    storage: ["128GB", "256GB", "512GB"],
+                    ram: "8GB",
+                    os: "Android 12"
+                },
+                colors: ["Bora Purple", "Graphite", "Pink Gold", "Blue"],
+                description: "The Samsung Galaxy Z Flip4 combines style and functionality in a compact foldable design. When folded, the 1.9-inch cover screen lets you check notifications, take selfies, and control music without opening the phone. When unfolded, you get a full 6.7-inch experience with a nearly invisible crease. FlexMode enables unique camera capabilities and hands-free video calls."
+            }
+        ];
+        
+        // Shopping cart functionality
+        let cart = [];
+        const cartCount = document.getElementById('cart-count');
+        const cartIcon = document.getElementById('cart-icon');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCart = document.getElementById('close-cart');
+        const cartItems = document.getElementById('cart-items');
+        const cartSidebarCount = document.getElementById('cart-sidebar-count');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const continueShoppingBtn = document.getElementById('continue-shopping');
+        const startShoppingBtn = document.getElementById('start-shopping');
+        const checkoutBtn = document.getElementById('checkout-button');
+        
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Quick view modal functionality
+        const quickViewModal = document.getElementById('quick-view-modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        // Product grid
+        const productGrid = document.getElementById('product-grid');
+        const sortSelect = document.getElementById('sort-select');
+        
+        // View type buttons
+        const gridViewBtn = document.getElementById('grid-view');
+        const listViewBtn = document.getElementById('list-view');
+        
+        // Render products
+        function renderProducts(productsToRender) {
+            productGrid.innerHTML = '';
+            
+            productsToRender.forEach(product => {
+                const discountPercentage = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card bg-white rounded-xl shadow-sm overflow-hidden transition';
+                
+                productCard.innerHTML = `
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+                        ${product.isNew ? '<span class="absolute top-2 left-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded-full">NEW</span>' : ''}
+                        ${discountPercentage > 0 ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">-${discountPercentage}%</span>` : ''}
+                        <button data-id="${product.id}" class="quick-view-btn absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 text-gray-800 font-medium py-2 px-4 rounded-full text-sm transition">
+                            Quick View
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-indigo-600 font-medium">${product.brand}</span>
+                            <div class="flex items-center">
+                                <span class="text-yellow-400 mr-1"><i class="fas fa-star"></i></span>
+                                <span class="text-sm text-gray-600">${product.rating} (${product.reviewCount})</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">${product.name}</h3>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-lg">$${product.price.toFixed(2)}</span>
+                                ${product.originalPrice > product.price ? `<span class="text-sm text-gray-500 line-through ml-2">$${product.originalPrice.toFixed(2)}</span>` : ''}
+                            </div>
+                            <button data-id="${product.id}" class="add-to-cart-btn bg-indigo-600 hover:bg-indigo-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                productGrid.appendChild(productCard);
+            });
+            
+            // Add event listeners to quick view buttons
+            document.querySelectorAll('.quick-view-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    openQuickView(productId);
+                });
+            });
+            
+            // Add event listeners to add to cart buttons
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.closest('.add-to-cart-btn').getAttribute('data-id'));
+                    addToCart(productId);
+                });
+            });
+        }
+        
+        // Initialize products
+        renderProducts(products);
+        
+        // Sort products
+        sortSelect.addEventListener('change', () => {
+            const sortValue = sortSelect.value;
+            let sortedProducts = [...products];
+            
+            switch(sortValue) {
+                case 'price-low':
+                    sortedProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    sortedProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'newest':
+                    sortedProducts.sort((a, b) => b.isNew - a.isNew);
+                    break;
+                case 'rating':
+                    sortedProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                default:
+                    sortedProducts.sort((a, b) => b.isPopular - a.isPopular);
+            }
+            
+            renderProducts(sortedProducts);
+        });
+        
+        // View type switching
+        gridViewBtn.addEventListener('click', () => {
+            productGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6';
+            gridViewBtn.classList.add('text-indigo-600');
+            gridViewBtn.classList.remove('text-gray-600');
+            listViewBtn.classList.add('text-gray-600');
+            listViewBtn.classList.remove('text-indigo-600');
+        });
+        
+        listViewBtn.addEventListener('click', () => {
+            productGrid.className = 'grid grid-cols-1 gap-6';
+            listViewBtn.classList.add('text-indigo-600');
+            listViewBtn.classList.remove('text-gray-600');
+            gridViewBtn.classList.add('text-gray-600');
+            gridViewBtn.classList.remove('text-indigo-600');
+        });
+        
+        // Open quick view modal
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            if (!product) return;
+            
+            const storageOptions = product.specs.storage.map(option => 
+                `<label class="storage-option cursor-pointer px-3 py-1 border border-gray-300 rounded-full text-sm text-gray-800 hover:border-indigo-500 hover:bg-indigo-50 transition">
+                    <input type="radio" name="storage" value="${option}" class="hidden">
+                    ${option}
+                </label>`
+            ).join('');
+            
+            const colorOptions = product.colors.map(color => 
+                `<label class="color-option cursor-pointer mx-1">
+                    <input type="radio" name="color" value="${color}" class="hidden">
+                    <div class="w-8 h-8 rounded-full border-2 border-transparent hover:border-indigo-500 flex items-center justify-center" title="${color}">
+                        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-${colorToTailwind(color)}-500 to-${colorToTailwind(color)}-600"></div>
+                    </div>
+                </label>`
+            ).join('');
+            
+            modalContent.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <h2 class="text-2xl font-bold text-gray-800">${product.name}</h2>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <div class="bg-gray-100 rounded-xl overflow-hidden mb-4">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-80 object-cover">
+                        </div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div class="bg-gray-100 rounded-lg overflow-hidden cursor-pointer">
+                                <img src="${product.image}" alt="${product.name}" class="w-full h-20 object-cover">
+                            </div>
+                            <div class="bg-gray-100 rounded-lg overflow-hidden cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1581993192873-bf5e747e6e2f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="${product.name}" class="w-full h-20 object-cover">
+                            </div>
+                            <div class="bg-gray-100 rounded-lg overflow-hidden cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1560849815-2b1358c3e054?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="${product.name}" class="w-full h-20 object-cover">
+                            </div>
+                            <div class="bg-gray-100 rounded-lg overflow-hidden cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1160&q=80" alt="${product.name}" class="w-full h-20 object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <div class="flex items-center text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-800 ml-1">${product.rating}</span>
+                            </div>
+                            <span class="text-gray-600">${product.reviewCount} reviews</span>
+                        </div>
+                        <div class="mb-6">
+                            <div class="flex items-end gap-2">
+                                <span class="text-2xl font-bold text-gray-800">$${product.price.toFixed(2)}</span>
+                                ${product.originalPrice > product.price ? `<span class="text-gray-500 line-through">$${product.originalPrice.toFixed(2)}</span>` : ''}
+                                ${product.originalPrice > product.price ? `<span class="text-red-500 font-medium">Save ${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%</span>` : ''}
+                            </div>
+                            <p class="text-sm text-green-600 mt-1">In stock and ready to ship</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2">Color</h3>
+                            <div class="flex items-center">
+                                ${colorOptions}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2">Storage</h3>
+                            <div class="flex flex-wrap gap-2">
+                                ${storageOptions}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2">Description</h3>
+                            <p class="text-gray-600">${product.description}</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2">Key Specifications</h3>
+                            <ul class="grid grid-cols-2 gap-x-6 gap-y-2">
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-mobile-alt mr-2 text-indigo-500"></i>
+                                    <span>${product.specs.display}</span>
+                                </li>
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-microchip mr-2 text-indigo-500"></i>
+                                    <span>${product.specs.processor}</span>
+                                </li>
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-camera mr-2 text-indigo-500"></i>
+                                    <span>${product.specs.camera.split(',')[0]}</span>
+                                </li>
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-battery-full mr-2 text-indigo-500"></i>
+                                    <span>${product.specs.battery}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button id="modal-add-to-cart" data-id="${product.id}" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-full font-medium">
+                                Add to Cart
+                            </button>
+                            <button class="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 px-4 rounded-full">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            quickViewModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            
+            // Event listener for close button
+            document.getElementById('close-modal').addEventListener('click', closeQuickView);
+            
+            // Event listener for add to cart button
+            document.getElementById('modal-add-to-cart').addEventListener('click', (e) => {
+                const productId = parseInt(e.target.getAttribute('data-id'));
+                addToCart(productId);
+            });
+            
+            // Event listeners for storage options
+            document.querySelectorAll('.storage-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.storage-option').forEach(opt => {
+                        opt.classList.remove('border-indigo-500', 'bg-indigo-50', 'font-medium');
+                    });
+                    this.classList.add('border-indigo-500', 'bg-indigo-50', 'font-medium');
+                });
+            });
+            
+            // Event listeners for color options
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option div').forEach(opt => {
+                        opt.classList.remove('border-indigo-500');
+                    });
+                    this.querySelector('div').classList.add('border-indigo-500');
+                });
+            });
+            
+            // Click outside to close
+            quickViewModal.addEventListener('click', (e) => {
+                if (e.target === quickViewModal) {
+                    closeQuickView();
+                }
+            });
+            
+            // Select first options by default
+            const firstStorageOption = document.querySelector('.storage-option');
+            const firstColorOption = document.querySelector('.color-option div');
+            
+            if (firstStorageOption) firstStorageOption.classList.add('border-indigo-500', 'bg-indigo-50', 'font-medium');
+            if (firstColorOption) firstColorOption.classList.add('border-indigo-500');
+        }
+        
+        // Close quick view modal
+        function closeQuickView() {
+            quickViewModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+        
+        // Helper function to convert color names to Tailwind color classes
+        function colorToTailwind(color) {
+            const colorMap = {
+                'Phantom Black': 'gray',
+                'Cream': 'yellow',
+                'Green': 'green',
+                'Lavender': 'purple',
+                'Deep Purple': 'purple',
+                'Gold': 'yellow',
+                'Silver': 'gray',
+                'Space Black': 'gray',
+                'Obsidian': 'gray',
+                'Snow': 'gray',
+                'Hazel': 'green',
+                'Black': 'gray',
+                'White': 'gray',
+                'Bora Purple': 'purple',
+                'Graphite': 'gray',
+                'Pink Gold': 'pink',
+                'Blue': 'blue',
+                'Awesome Graphite': 'gray',
+                'Awesome Violet': 'purple',
+                'Awesome Lime': 'green',
+                'Awesome White': 'gray',
+                'Ceramic White': 'gray',
+                'Ceramic Black': 'gray',
+                'Ceramic Flora Green': 'green',
+                'Eternal Green': 'green',
+                'Titan Black': 'gray'
+            };
+            
+            return colorMap[color] || 'gray';
+        }
+        
+        // Add to cart functionality
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            
+            // Show confirmation
+            const confirmation = document.createElement('div');
+            confirmation.className = 'fixed top-4 right-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md z-50 scale-in-center';
+            confirmation.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <p><strong>${product.name}</strong> added to your cart!</p>
+                </div>
+            `;
+            document.body.appendChild(confirmation);
+            
+            setTimeout(() => {
+                confirmation.remove();
+            }, 3000);
+            
+            // Open cart sidebar
+            openCart();
+        }
+        
+        // Update cart
+        function updateCart() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartSidebarCount.textContent = totalItems;
+            
+            // Update cart items
+            if (totalItems > 0) {
+                emptyCartMessage.classList.add('hidden');
+                
+                cartItems.innerHTML = '';
+                let subtotal = 0;
+                
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'flex items-start space-x-4 mb-4 pb-4 border-b border-gray-200';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">${item.name}</h4>
+                            <div class="flex items-center mt-1">
+                                <span class="text-gray-600 text-sm mr-2">$${item.price.toFixed(2)}</span>
+                                <div class="flex items-center border border-gray-300 rounded">
+                                    <button class="decrease-quantity px-2 py-1 text-gray-600 hover:bg-gray-100" data-id="${item.id}">-</button>
+                                    <span class="px-2 text-sm">${item.quantity}</span>
+                                    <button class="increase-quantity px-2 py-1 text-gray-600 hover:bg-gray-100" data-id="${item.id}">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="remove-item text-gray-500 hover:text-red-500" data-id="${item.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    
+                    cartItems.appendChild(cartItem);
+                });
+                
+                // Update subtotal
+                cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+                
+                // Add event listeners for cart item buttons
+                document.querySelectorAll('.increase-quantity').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.getAttribute('data-id'));
+                        const item = cart.find(i => i.id === productId);
+                        if (item) {
+                            item.quantity += 1;
+                            updateCart();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.decrease-quantity').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.getAttribute('data-id'));
+                        const item = cart.find(i => i.id === productId);
+                        if (item && item.quantity > 1) {
+                            item.quantity -= 1;
+                        } else if (item && item.quantity === 1) {
+                            cart = cart.filter(i => i.id !== productId);
+                        }
+                        updateCart();
+                    });
+                });
+                
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.closest('.remove-item').getAttribute('data-id'));
+                        cart = cart.filter(item => item.id !== productId);
+                        updateCart();
+                    });
+                });
+            } else {
+                emptyCartMessage.classList.remove('hidden');
+                cartSubtotal.textContent = '$0.00';
+            }
+        }
+        
+        // Open cart sidebar
+        function openCart() {
+            cartSidebar.classList.remove('translate-x-full');
+            document.body.classList.add('overflow-hidden');
+        }
+        
+        // Close cart sidebar
+        function closeCart() {
+            cartSidebar.classList.add('translate-x-full');
+            document.body.classList.remove('overflow-hidden');
+        }
+        
+        // Event listeners
+        cartIcon.addEventListener('click', openCart);
+        closeCart.addEventListener('click', closeCart);
+        continueShoppingBtn.addEventListener('click', closeCart);
+        startShoppingBtn.addEventListener('click', closeCart);
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length > 0) {
+                alert('Proceeding to checkout...');
+                // In a real application, this would redirect to a checkout page
+            }
+        });
+        
+        // Intersection Observer for navbar
+        const navbar = document.getElementById('navbar');
+        
+        const navbarObserver = new IntersectionObserver(
+            (entries) => {
+                if (!entries[0].isIntersecting) {
+                    navbar.classList.add('shadow-md');
+                } else {
+                    navbar.classList.remove('shadow-md');
+                }
+            },
+            { threshold: 0.1 }
+        );
+        
+        navbarObserver.observe(document.querySelector('.hero-gradient'));
+        
+        // Scroll animation for sections
+        const fadeElements = document.querySelectorAll('section:not(.hero-gradient)');
+        
+        const fadeObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+        
+        fadeElements.forEach(element => {
+            element.classList.add('opacity-0', 'translate-y-10', 'transition', 'duration-700');
+            fadeObserver.observe(element);
+        });
+
+        // Initialize with the first product selected
+        if (products.length > 0) {
+            document.querySelector('.storage-option')?.click();
+            document.querySelector('.color-option')?.click();
+        }
+    </script>
+</body>
+</html>
